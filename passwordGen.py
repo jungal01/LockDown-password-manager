@@ -1,3 +1,22 @@
+'''
+================================================================================
+Copyright 2017 Allen Junge
+
+This file is part of Password Generator.
+    Password Generator is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    any later version.
+    
+    Password Generator is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with Password Generator.  If not, see <http://www.gnu.org/licenses/>.
+================================================================================
+'''
 import random
 
 
@@ -89,7 +108,13 @@ class PasswordGenerator:
             passwrd = r.sample(self.__words,r.randrange(3,7))
 
         passwrd = ''.join(passwrd)
-        return passwrd
+                if passwrd+"\n" not in self.__usedwords:
+            # adds the new password to the used file, to avoid repeats
+            self.__used.write('{}\n' .format(passwrd))
+            return passwrd
+        else:
+            # recurses to get an unused password if not unique
+            self.securePass()
 
     def shortSecure(self):
         # has a char maximum of 18, and max 4 words
@@ -99,4 +124,10 @@ class PasswordGenerator:
             passwrd = r.sample(self.__words, r.randrange(2,5))
 
         passwrd = ''.join(passwrd)
-        return passwrd
+                if passwrd+"\n" not in self.__usedwords:
+            # adds the new password to the used file, to avoid repeats
+            self.__used.write('{}\n' .format(passwrd))
+            return passwrd
+        else:
+            # recurses to get an unused password if not unique
+            self.shortSecure()
