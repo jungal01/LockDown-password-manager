@@ -7,11 +7,11 @@ This generator creates a password of various lengths, with a minimum of 8 charac
 <code>words.txt</code> is the unformatted version of <code>dictionary.txt</code>, and was skimmed from 2 online dictionaries. <code>dictionary.txt</code> had extra formatting done by hand to remove vulgar language and to remove 'words' like <code>aaa</code>. If the purpose you choose to use this for needs some extra words, it's suggested to avoid use of <code>words.txt</code> and instead add the necessary words to <code>dictionary.txt<code>.
   
 # Todo
-[x] hash stored passwords
-[ ] implement urandom instead of systemrandom
-[ ] implement string module
-[ ] allow for percentage of leet
-[ ] allow user passwords to be entered
-[ ] create a GUI
-[ ] allow user to choose a single password or combine words from generated list
+- [x] hash stored passwords
+- [ ] implement urandom instead of systemrandom
+- [ ] implement string module
+- [ ] allow for percentage of leet
+- [ ] allow user passwords to be entered
+- [ ] create a GUI
+- [ ] allow user to choose a single password or combine words from generated list
 
