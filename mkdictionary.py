@@ -18,11 +18,10 @@ This file is part of Password Generator.
     along with Password Generator.  If not, see <http://www.gnu.org/licenses/>.
 ==================================
 '''
-
-# I couldn't figure it out, but despite the set filtering most repeats,
-# The only way to get exactly one instance of each word is to run this
-# twice, replacing 'words.txt' with 'dictionary.txt'
-
+# This hastily written file is to split all the words
+# in words.txt and place a single instance of each word
+# into dictionary.txt for editing by the user and for
+# reading by the main program
 import re
 
 
@@ -41,16 +40,20 @@ def main():
         if '\n' not in newList[count]:
             newList[count] += '\n'
         formattedWords.add(newList[count])
+        count += 1
 
     formattedWords.remove('\n')
 
+    # convert to a list to make hand-editing easier
     formattedWords = list(formattedWords)
     formattedWords.sort()
-    finalProduct = open("dictionary.txt", 'w')
+    finalProduct = open("test.txt", 'w')
     for x in formattedWords:
         finalProduct.write(x)
 
     unformatted.close()
     finalProduct.close()
 
-main()
+if __name__ == "__main__":
+    main()
+
