@@ -18,6 +18,7 @@ This file is part of Password Generator.
 ================================================================================
 '''
 import random
+import hashlib
 
 
 class PasswordGenerator:
@@ -28,15 +29,20 @@ class PasswordGenerator:
             for word in dictionary:
                 self.__words.add(word.strip('\n'))
         except FileNotFoundError:
-            raise Exception("Dictionary is missing; word passwords not possible")
-            
+            raise Exception("Dictionary is missing, word passwords not possible")
+
         try:
-            self.__used = open('usedpass.txt', 'r+')
+            self.__used = open('usedpass.txt', "r+")
             self.__usedwords = set()
             for line in self.__used:
-                self.__usedwords.add(line)
+                self.__usedwords.add(line.strip("\n"))
         except FileNotFoundError:
             self.__used = open('usedpass.txt', 'w')
+            self.__usedwords = set()
+
+    def __Hash(self, item):
+        item = item.encode('utf-8')
+        return hashlib.sha3_512(item).hexdigest()
 
     def randChars(self):
         r = random.SystemRandom()
@@ -51,14 +57,13 @@ class PasswordGenerator:
             # lowletter is used twice to add a password-like balance
             char = [r.choice(lowletter), r.choice(lowletter), r.choice(upletter), r.choice(nums), r.choice(specialChar)]
             passwrd.append(r.choice(char))
-        passwrd = ''.join(passwrd)
 
-        if passwrd+"\n" not in self.__usedwords:
-            # adds the new password to the used file, to avoid repeats
-            self.__used.write('{}\n' .format(passwrd))
+        passwrd = ''.join(passwrd)
+        if self.__Hash(passwrd) not in self.__usedwords:
+            self.__used.write(self.__Hash(passwrd)+'\n')
             return passwrd
+
         else:
-            # recurses to get an unused password if not unique
             self.randChars()
 
     def longRand(self):
@@ -75,11 +80,12 @@ class PasswordGenerator:
         for x in range(r.randrange(16, 36)):
             char = [r.choice(lowletter), r.choice(lowletter), r.choice(upletter), r.choice(nums), r.choice(specialChar)]
             passwrd.append(r.choice(char))
-        passwrd = ''.join(passwrd)
 
-        if passwrd not in self.__usedwords:
-            self.__used.write('{}\n' .format(passwrd))
+        passwrd = ''.join(passwrd)
+        if self.__Hash(passwrd) not in self.__usedwords:
+            self.__used.write(self.__Hash(passwrd)+'\n')
             return passwrd
+
         else:
             self.longRand()
 
@@ -108,12 +114,11 @@ class PasswordGenerator:
             passwrd = r.sample(self.__words,r.randrange(3,7))
 
         passwrd = ''.join(passwrd)
-                if passwrd+"\n" not in self.__usedwords:
-            # adds the new password to the used file, to avoid repeats
-            self.__used.write('{}\n' .format(passwrd))
+        if self.__Hash(passwrd) not in self.__usedwords:
+            self.__used.write(self.__Hash(passwrd)+'\n')
             return passwrd
+
         else:
-            # recurses to get an unused password if not unique
             self.securePass()
 
     def shortSecure(self):
@@ -124,10 +129,9 @@ class PasswordGenerator:
             passwrd = r.sample(self.__words, r.randrange(2,5))
 
         passwrd = ''.join(passwrd)
-                if passwrd+"\n" not in self.__usedwords:
-            # adds the new password to the used file, to avoid repeats
-            self.__used.write('{}\n' .format(passwrd))
+        if self.__Hash(passwrd) not in self.__usedwords:
+            self.__used.write(self.__Hash(passwrd)+'\n')
             return passwrd
+
         else:
-            # recurses to get an unused password if not unique
             self.shortSecure()
