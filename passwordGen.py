@@ -119,11 +119,12 @@ class PasswordGenerator:
         # This is creates a far more secure password. There is no real upper 
         # limit on size. It will pull at least 3 and up to 10 words from the set
         r = random.SystemRandom()
-        passwrd = r.sample(self.__words, r.randrange(3,10))
-        while len(''.join(passwrd)) < 25:
-            passwrd = r.sample(self.__words,r.randrange(3,10))
+        passwrd = ''.join(r.sample(self.__words, r.randrange(3,10)))
+        print(len(passwrd) < 25) 
+        while len(passwrd) < 25:
+            passwrd = ''.join(r.sample(self.__words, r.randrange(3,10)))
 
-        return ''.join(passwrd)
+        return ''.join(passwrd), len("".join(passwrd))
 
     def shortSecure(self):
         # has a char maximum of 18, and max 4 words
@@ -132,19 +133,19 @@ class PasswordGenerator:
         while len(''.join(passwrd)) > 18:
             passwrd = r.sample(self.__words, r.randrange(2,5))
 
-        return ''.join(passwrd)
+        return ''.join(passwrd), len("".join(passwrd))
 
 
 def main():
     usr = input("(s)hort (l)ong (q)uit: ")
     passwrd = PasswordGenerator()
-    while usr != "q" or "quit":
-        if usr == 'short' or 's':
+    while usr != ('q' or 'quit'):
+        if usr == ('s' or 'short'):
             print(passwrd.shortSecure())
-        else: 
+        elif usr == ('l' or 'long'): 
             print(passwrd.securePass())
-        
-        usr = input("short or long (q to quit): ")
+
+        usr = input("(s)hort (l)ong (q)uit: ")
 
 if __name__=="__main__":
     main()
