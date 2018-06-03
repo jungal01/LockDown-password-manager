@@ -18,11 +18,42 @@ This file is part of Password Generator.
 ================================================================================
 '''
 import random
-import hashlib
 
 
 class PasswordGenerator:
-    def __init__(self):
+    """
+    ============================================================================
+    This is the password generating class. It has 5 methods. At the moment, it
+    uses random.SystemRandom to generate crypto secure randomness, but this
+    dependency means it may not work on every system.
+    
+    randChars: creates a password of between 8 and 16 random chars. Intended
+        for creating a quick, unique password for one time use.
+        
+    longRand: creates a password of between 16 and 52 random chars. Intended
+        for creating a quick password that is meant for less important things,
+        but needs to be used on a service more than one time.
+        
+    l33t: This is an internal method, designed to make passwords palatable to
+        archaic systems that require numbers and symbols. In the future, it 
+        will have a percentage of leeting.
+        
+    securePass: This is the most secure password generator. It uses between 3
+        and 10 words, has no upper limit, and has a lower limit of 26 chars.
+        
+    shortSecure: This is generally more secure than the random generators, but
+        still inferior to securePass. To get past ridiculous password length
+        limits, this method uses between 2 and 5 words, and has an upper limit
+        of 18 chars.
+    ----------------------------------------------------------------------------
+    I believe I should explain some implementation details. The randomness is
+    created in every method call to prevent a predictable password to be
+    generated between multiple uses of the same class instance. I chose to name
+    munge the dictionary set to protect from attackers changing the dictionary
+    without editing the code by hand.
+    ============================================================================
+    """
+    def __init__(self, passwrd=None, leetIt=False):
         try:
             dictionary = open('dictionary.txt')
             self.__words = set()
@@ -30,19 +61,6 @@ class PasswordGenerator:
                 self.__words.add(word.strip('\n'))
         except FileNotFoundError:
             raise Exception("Dictionary is missing, word passwords not possible")
-
-        try:
-            self.__used = open('usedpass.txt', "r+")
-            self.__usedwords = set()
-            for line in self.__used:
-                self.__usedwords.add(line.strip("\n"))
-        except FileNotFoundError:
-            self.__used = open('usedpass.txt', 'w')
-            self.__usedwords = set()
-
-    def __Hash(self, item):
-        item = item.encode('utf-8')
-        return hashlib.sha3_512(item).hexdigest()
 
     def randChars(self):
         r = random.SystemRandom()
@@ -55,16 +73,11 @@ class PasswordGenerator:
         passwrd = []
         for x in range(r.randrange(8, 17)):
             # lowletter is used twice to add a password-like balance
-            char = [r.choice(lowletter), r.choice(lowletter), r.choice(upletter), r.choice(nums), r.choice(specialChar)]
+            char = [r.choice(lowletter), r.choice(lowletter), 
+                    r.choice(upletter), r.choice(nums), r.choice(specialChar)]
             passwrd.append(r.choice(char))
 
-        passwrd = ''.join(passwrd)
-        if self.__Hash(passwrd) not in self.__usedwords:
-            self.__used.write(self.__Hash(passwrd)+'\n')
-            return passwrd
-
-        else:
-            self.randChars()
+        return ''.join(passwrd)
 
     def longRand(self):
         # repeat of randChars, with a higher char count
@@ -77,24 +90,21 @@ class PasswordGenerator:
         specialChar = list('!@#$%^&*()_\|/?{}')
 
         passwrd = []
-        for x in range(r.randrange(16, 36)):
-            char = [r.choice(lowletter), r.choice(lowletter), r.choice(upletter), r.choice(nums), r.choice(specialChar)]
+        for x in range(r.randrange(16, 53)):
+            char = [r.choice(lowletter), r.choice(lowletter),
+                    r.choice(upletter), r.choice(nums), r.choice(specialChar)]
             passwrd.append(r.choice(char))
 
-        passwrd = ''.join(passwrd)
-        if self.__Hash(passwrd) not in self.__usedwords:
-            self.__used.write(self.__Hash(passwrd)+'\n')
-            return passwrd
-
-        else:
-            self.longRand()
+        return ''.join(passwrd)
 
     def l33t(self, string):
-        # meant to be called in case a password needs some nums
-        # and special characters
+        # meant to be called in case a password needs some nums and special
+        # characters
         r = random.SystemRandom()
-        l33tChars = {'a':'@','A':'4','e':'3','E':'3','i':'1','I':'!','o':'0','O':'0','b':'8','B':'8','g':'&','G':'&',
-                     's':'5','S':'$','t':'7','T':'7','z':'2','Z':'2','l':'|','L':'1','h':'#','H':'#'}
+        l33tChars = {'a':'@','A':'4','e':'3','E':'3','i':'1','I':'!','o':'0',
+                     'O':'0','b':'8','B':'8','g':'&','G':'&','s':'5','S':'$',
+                     't':'7','T':'7','z':'2','Z':'2','l':'|','L':'1','h':'#',
+                     'H':'#'}
 
         newleet = list(string)
         for x,y in enumerate(newleet):
@@ -106,20 +116,14 @@ class PasswordGenerator:
         return ''.join(newleet)
 
     def securePass(self):
-        # has a maximum length of 35, using random choice
-        # of 3-6 words with any length pulled from the dictionary.
+        # This is creates a far more secure password. There is no real upper 
+        # limit on size. It will pull at least 3 and up to 10 words from the set
         r = random.SystemRandom()
-        passwrd = r.sample(self.__words, r.randrange(3,7))
-        while len(''.join(passwrd)) > 35:
-            passwrd = r.sample(self.__words,r.randrange(3,7))
+        passwrd = r.sample(self.__words, r.randrange(3,10))
+        while len(''.join(passwrd)) < 25:
+            passwrd = r.sample(self.__words,r.randrange(3,10))
 
-        passwrd = ''.join(passwrd)
-        if self.__Hash(passwrd) not in self.__usedwords:
-            self.__used.write(self.__Hash(passwrd)+'\n')
-            return passwrd
-
-        else:
-            self.securePass()
+        return ''.join(passwrd)
 
     def shortSecure(self):
         # has a char maximum of 18, and max 4 words
@@ -128,10 +132,19 @@ class PasswordGenerator:
         while len(''.join(passwrd)) > 18:
             passwrd = r.sample(self.__words, r.randrange(2,5))
 
-        passwrd = ''.join(passwrd)
-        if self.__Hash(passwrd) not in self.__usedwords:
-            self.__used.write(self.__Hash(passwrd)+'\n')
-            return passwrd
+        return ''.join(passwrd)
 
-        else:
-            self.shortSecure()
+
+def main():
+    usr = input("(s)hort (l)ong (q)uit: ")
+    passwrd = PasswordGenerator()
+    while usr != "q" or "quit":
+        if usr == 'short' or 's':
+            print(passwrd.shortSecure())
+        else: 
+            print(passwrd.securePass())
+        
+        usr = input("short or long (q to quit): ")
+
+if __name__=="__main__":
+    main()
