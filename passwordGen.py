@@ -1,6 +1,6 @@
 '''
 ================================================================================
-Copyright 2017 Allen Junge
+Copyright 2017-2018 Allen Junge
 
 This file is part of Password Generator.
     Password Generator is free software: you can redistribute it and/or modify
