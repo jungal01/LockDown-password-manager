@@ -2,20 +2,20 @@
 ==================================
 Copyright 2017 Allen Junge
 
-This file is part of Password Generator.
+This file is part of LockDown.
 
-    Password Generator is free software: you can redistribute it and/or modify
+    LockDown is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     any later version.
 
-    Password Generator is distributed in the hope that it will be useful,
+    LockDown is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with Password Generator.  If not, see <http://www.gnu.org/licenses/>.
+    along with LockDown.  If not, see <http://www.gnu.org/licenses/>.
 ==================================
 '''
 # This hastily written file is to split all the words
