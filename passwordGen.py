@@ -39,7 +39,7 @@ class PasswordGenerator:
         will have a percentage of leeting.
         
     securePass: This is the most secure generator. It uses between 3
-        and 10 words, has no upper limit, and has a lower limit of 26 chars.
+        and 10 words, has no upper limit, and has a lower limit of 20 chars.
         
     shortSecure: This is generally more secure than the random generators, but
         still inferior to securePass. To get past ridiculous password length
@@ -119,12 +119,11 @@ class PasswordGenerator:
         # This is creates a far more secure password. There is no real upper 
         # limit on size. It will pull at least 3 and up to 10 words from the set
         r = random.SystemRandom()
-        passwrd = ''.join(r.sample(self.__words, r.randrange(3,10)))
-        print(len(passwrd) < 25) 
-        while len(passwrd) < 25:
+        passwrd = ''.join(r.sample(self.__words, r.randrange(3,10))) 
+        while len(passwrd) < 19:
             passwrd = ''.join(r.sample(self.__words, r.randrange(3,10)))
 
-        return ''.join(passwrd), len("".join(passwrd))
+        return ''.join(passwrd)
 
     def shortSecure(self):
         # has a char maximum of 18, and max 4 words
