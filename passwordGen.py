@@ -2,19 +2,19 @@
 ================================================================================
 Copyright 2017-2018 Allen Junge
 
-This file is part of Password Generator.
-    Password Generator is free software: you can redistribute it and/or modify
+This file is part of LockDown.
+    LockDown is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     any later version.
     
-    Password Generator is distributed in the hope that it will be useful,
+    LockDown is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
     
     You should have received a copy of the GNU General Public License
-    along with Password Generator.  If not, see <http://www.gnu.org/licenses/>.
+    along with LockDown.  If not, see <http://www.gnu.org/licenses/>.
 ================================================================================
 '''
 import random
@@ -38,8 +38,8 @@ class PasswordGenerator:
         archaic systems that require numbers and symbols. In the future, it 
         will have a percentage of leeting.
         
-    securePass: This is the most secure password generator. It uses between 3
-        and 10 words, has no upper limit, and has a lower limit of 26 chars.
+    securePass: This is the most secure generator. It uses between 3
+        and 10 words, has no upper limit, and has a lower limit of 20 chars.
         
     shortSecure: This is generally more secure than the random generators, but
         still inferior to securePass. To get past ridiculous password length
@@ -119,12 +119,11 @@ class PasswordGenerator:
         # This is creates a far more secure password. There is no real upper 
         # limit on size. It will pull at least 3 and up to 10 words from the set
         r = random.SystemRandom()
-        passwrd = ''.join(r.sample(self.__words, r.randrange(3,10)))
-        print(len(passwrd) < 25) 
-        while len(passwrd) < 25:
+        passwrd = ''.join(r.sample(self.__words, r.randrange(3,10))) 
+        while len(passwrd) < 19:
             passwrd = ''.join(r.sample(self.__words, r.randrange(3,10)))
 
-        return ''.join(passwrd), len("".join(passwrd))
+        return ''.join(passwrd)
 
     def shortSecure(self):
         # has a char maximum of 18, and max 4 words
