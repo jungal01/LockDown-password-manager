@@ -7,12 +7,12 @@ This file is part of LockDown.
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     any later version.
-    
+
     LockDown is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-    
+
     You should have received a copy of the GNU General Public License
     along with LockDown.  If not, see <http://www.gnu.org/licenses/>.
 ================================================================================
@@ -26,21 +26,21 @@ class PasswordGenerator:
     This is the password generating class. It has 5 methods. At the moment, it
     uses random.SystemRandom to generate crypto secure randomness, but this
     dependency means it may not work on every system.
-    
+
     randChars: creates a password of between 8 and 16 random chars. Intended
         for creating a quick, unique password for one time use.
-        
+
     longRand: creates a password of between 16 and 52 random chars. Intended
         for creating a quick password that is meant for less important things,
         but needs to be used on a service more than one time.
-        
+
     l33t: This is an internal method, designed to make passwords palatable to
-        archaic systems that require numbers and symbols. In the future, it 
+        archaic systems that require numbers and symbols. In the future, it
         will have a percentage of leeting.
-        
+
     securePass: This is the most secure generator. It uses between 3
         and 10 words, has no upper limit, and has a lower limit of 20 chars.
-        
+
     shortSecure: This is generally more secure than the random generators, but
         still inferior to securePass. To get past ridiculous password length
         limits, this method uses between 2 and 5 words, and has an upper limit
@@ -73,7 +73,7 @@ class PasswordGenerator:
         passwrd = []
         for x in range(r.randrange(8, 17)):
             # lowletter is used twice to add a password-like balance
-            char = [r.choice(lowletter), r.choice(lowletter), 
+            char = [r.choice(lowletter), r.choice(lowletter),
                     r.choice(upletter), r.choice(nums), r.choice(specialChar)]
             passwrd.append(r.choice(char))
 
@@ -101,14 +101,15 @@ class PasswordGenerator:
         # meant to be called in case a password needs some nums and special
         # characters
         r = random.SystemRandom()
-        l33tChars = {'a':'@','A':'4','e':'3','E':'3','i':'1','I':'!','o':'0',
-                     'O':'0','b':'8','B':'8','g':'&','G':'&','s':'5','S':'$',
-                     't':'7','T':'7','z':'2','Z':'2','l':'|','L':'1','h':'#',
-                     'H':'#'}
+        l33tChars = {'a': '@', 'A': '4', 'e': '3', 'E': '3', 'i': '1',
+                     'I': '!', 'o': '0', 'O': '0', 'b': '8', 'B': '8',
+                     'g': '&', 'G': '&', 's': '5', 'S': '$', 't': '7',
+                     'T': '7', 'z': '2', 'Z': '2', 'l': '|', 'L': '1',
+                     'h': '#', 'H': '#'}
 
         newleet = list(string)
-        for x,y in enumerate(newleet):
-            yn = r.choice([True,False])
+        for x, y in enumerate(newleet):
+            yn = r.choice([True, False])
             if yn:
                 if y in l33tChars:
                     newleet[x] = l33tChars[y]
@@ -116,23 +117,23 @@ class PasswordGenerator:
         return ''.join(newleet)
 
     def securePass(self):
-        # This is creates a far more secure password. There is no real upper 
+        # This is creates a far more secure password. There is no real upper
         # limit on size. It will pull at least 3 and up to 10 words from the set
         r = random.SystemRandom()
-        passwrd = ''.join(r.sample(self.__words, r.randrange(3,10))) 
+        passwrd = ''.join(r.sample(self.__words, r.randrange(3, 10)))
         while len(passwrd) < 19:
-            passwrd = ''.join(r.sample(self.__words, r.randrange(3,10)))
+            passwrd = ''.join(r.sample(self.__words, r.randrange(3, 10)))
 
         return ''.join(passwrd)
 
     def shortSecure(self):
         # has a char maximum of 18, and max 4 words
         r = random.SystemRandom()
-        passwrd = r.sample(self.__words, r.randrange(2,5))
+        passwrd = r.sample(self.__words, r.randrange(2, 5))
         while len(''.join(passwrd)) > 18:
-            passwrd = r.sample(self.__words, r.randrange(2,5))
+            passwrd = r.sample(self.__words, r.randrange(2, 5))
 
-        return ''.join(passwrd), len("".join(passwrd))
+        return ''.join(passwrd)
 
 
 def main():
@@ -141,10 +142,11 @@ def main():
     while usr != ('q' or 'quit'):
         if usr == ('s' or 'short'):
             print(passwrd.shortSecure())
-        elif usr == ('l' or 'long'): 
+        elif usr == ('l' or 'long'):
             print(passwrd.securePass())
 
         usr = input("(s)hort (l)ong (q)uit: ")
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     main()
