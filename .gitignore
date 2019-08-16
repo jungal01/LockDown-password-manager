@@ -1,2 +1,7 @@
 # no need for python cache
 __pycache__
+
+# all passwords and keys, for testing or otherwise, shouldn't be put into the world
+passwords.csv
+*.key
+
