@@ -18,58 +18,68 @@ from Crypto.Random import get_random_bytes
 
 
 class pureRSA:
-    def __init__(self, phrase, file=None, keysize=2048, generate=False, encrypt=True, pure=False, idx='_'):
+    def __init__(self, phrase, message, keysize=2048):
+        self.__phrase = phrase
+        self.__message = message
         self.keysize = keysize
-        self.fileId = idx
 
-        if generate:
-            self.mkKey(phrase, self.keysize)
-        if file is not None:
-            if encrypt:
-                self.RSAencrypt(file, phrase)
-            elif not encrypt:
-                self.RSAdecrypt(file, phrase)
-        else:
-            raise ValueError("File name is required")
+    def mkKey(self, keyid='_'):
+        key = RSA.generate(self.keysize)
+        encrypted_key = key.exportKey(passphrase=self.__phrase, pkcs=8, protection='scryptAndAES256-CBC')
 
-    def mkKey(self, phrase, keysize, idx='_'):
-        key = RSA.generate(keysize)
-        encrypted_key = key.exportKey(passphrase=phrase, pkcs=8, protection='scryptAndAES256-CBC')
-
-        with open('privateRSAkey_{}.key'.format(idx), 'wb') as f:
+        with open('privateRSAkey_{}.key'.format(keyid), 'wb') as f:
             f.write(encrypted_key)
 
-        with open('publicRSAkey_{}.key'.format(idx), 'wb') as f:
+        with open('publicRSAkey_{}.key'.format(keyid), 'wb') as f:
             f.write(key.publickey().exportKey())
 
-    def RSAencrypt(self, file, phrase):
-        if os.path.exists(file):
-            message = open(file, 'rb').read()
-        message = file
-        encrypted_message = open('{}.encypted'.format(file), 'wb')
+    def RSAencrypt(self, filename, keyid='_', write=False):
+        if not os.path.exists('publicRSAkey_{}.key' .format(keyid)):
+            self.mkKey(keyid)
 
+        public_key = RSA.importKey(open('publicRSAkey_{}.key' .format(keyid)).read())
+        encrypt_cipher = PKCS1_OAEP.new(public_key)
+        ciphertext = encrypt_cipher.encrypt(self.__message)
 
-    def RSAdecrypt(self, file, phrase):
-        pass
-
-    def pureEncrypt(self, file, phrase):
-        message = open(file, 'rb').read()
-        encrypted_message = open(file+'.encypted', 'wb')
-        text_limit = (self.keysize//16) - 42
-        encrypted_file = open('passwords.rsa', 'wb')
-
-        if os.path.exists('RSAkeyArchive.tar.gz'):
-            pass
+        if write:
+            with open(filename, 'wb') as ef:
+                ef.write(ciphertext)
+                ef.close()
         else:
-            idx = 0
-            for i in range(0, len(message), text_limit):
-                nonce = get_random_bytes(16).decode('utf-8', errors='surrogateescape')
-                self.mkKey(phrase+nonce, self.keysize, idx)
-                public_key = RSA.importKey(open('publicRSAkey{}.key'.format(idx)).read())
-                encrypt_cipher = PKCS1_OAEP.new(public_key)
-                ciphertext = encrypt_cipher.encrypt(i)
-                encrypted_file.write(nonce.encode('ascii', errors='surrogateescape')+ciphertext)
-                idx += 1
+            return ciphertext
 
-    def pureDecrypt(self, file, phrase):
+    def RSAdecrypt(self, encryptedName, plainName, keyid='_', write=False):
+        with open(encryptedName, 'rb') as f:
+            ciphertext = f.read()
+
+        private_key = RSA.importKey(open('privateRSAkey_{}.key' .format(keyid)).read(), self.__phrase)
+        decrypt_cipher = PKCS1_OAEP.new(private_key)
+        plaintext = decrypt_cipher.decrypt(ciphertext)
+
+        if write:
+            with open(plainName, 'wb') as f:
+                f.write(plaintext)
+                f.close()
+        else:
+            return plaintext
+
+    def encryptFile(self, file, phrase, idx):
         pass
+
+    def decryptFile(self, file, phrase, idx):
+        pass
+
+
+def main():
+    file = open('message.txt', 'rb')
+    message = file.readline()
+    phrase = 'totallyRandomPassPhrase'
+    rsa = pureRSA(phrase, message)
+    rsa.RSAencrypt('encrypted_message.rsa', 'basic', write=True)
+
+    newRSA = pureRSA(phrase, message)
+    newRSA.RSAdecrypt('encrypted_message.rsa', 'little_message', 'basic', write=True)
+
+
+if __name__ == '__main__':
+    main()

@@ -5,3 +5,5 @@ __pycache__
 passwords.csv
 *.key
 
+# all output files are unnecessary
+encrypted_message*
