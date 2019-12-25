@@ -21,7 +21,7 @@ This file is part of LockDown.
 '''
 
 import sys
-import passwordGen
+from lpm_pycore import passwordGen
 import random
 
 
@@ -34,8 +34,8 @@ gen = False
 store = False
 launch = True
 
-file = open('dictionary.txt')
-words = file.read().split('\n')
+#file = open('dictionary.txt')
+#words = file.read().split('\n')
 # this will stop the gui from launching if other options are passed
 if len(sys.argv) > 1 and sys.argv[1][0] == '-':
     launch = False
