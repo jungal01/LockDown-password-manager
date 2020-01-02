@@ -18,6 +18,7 @@ This file is part of LockDown.
 ================================================================================
 '''
 import random
+import os
 
 
 class PasswordGenerator:
@@ -27,7 +28,7 @@ class PasswordGenerator:
     uses random.SystemRandom to generate crypto secure randomness, but this
     dependency means it may not work on every system.
 
-    randChars: creates a password of between 8 and 16 random chars. Intended
+    shortRand: creates a password of between 8 and 16 random chars. Intended
         for creating a quick, unique password for one time use.
 
     longRand: creates a password of between 16 and 52 random chars. Intended
@@ -38,7 +39,7 @@ class PasswordGenerator:
         archaic systems that require numbers and symbols. In the future, it
         will have a percentage of leeting.
 
-    securePass: This is the most secure generator. It uses between 3
+    longSecure: This is the most secure generator. It uses between 3
         and 10 words, has no upper limit, and has a lower limit of 20 chars.
 
     shortSecure: This is generally more secure than the random generators, but
@@ -55,14 +56,15 @@ class PasswordGenerator:
     """
     def __init__(self, passwrd=None, leetIt=False):
         try:
-            dictionary = open('dictionary.txt')
+            path = os.path.join(os.path.dirname(__file__), 'dictionary.txt')
+            dictionary = open(path)
             self.__words = set()
             for word in dictionary:
                 self.__words.add(word.strip('\n'))
-        except FileNotFoundError:
+        except:
             raise Exception("Dictionary is missing, word passwords not possible")
 
-    def randChars(self):
+    def shortRand(self):
         r = random.SystemRandom()
         # sets up all the preferred characters
         lowletter = list('abcdefghijklmnopqrstuvwxyz_')
@@ -80,7 +82,7 @@ class PasswordGenerator:
         return ''.join(passwrd)
 
     def longRand(self):
-        # repeat of randChars, with a higher char count
+        # repeat of shortRand, with a higher char count
         # meant for more security
         r = random.SystemRandom()
 
@@ -116,7 +118,7 @@ class PasswordGenerator:
 
         return ''.join(newleet)
 
-    def securePass(self):
+    def longSecure(self):
         # This is creates a far more secure password. There is no real upper
         # limit on size. It will pull at least 3 and up to 10 words from the set
         r = random.SystemRandom()
