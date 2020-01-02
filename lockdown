@@ -68,13 +68,13 @@ def launchApp():
 
 def genPass(passType='sw'):
     # this calls the password generator class in passwordGen. The password
-    # types are: sr==randChars, lr==longRand, sw==shortSecure, lw==securePass,
+    # types are: sr==shortRand, lr==longRand, sw==shortSecure, lw==longSecure,
     #w==20 random words
     passwrd = passwordGen.PasswordGenerator()
     wordlist = []
     if passType == 'sr':
         for _ in range(10):
-            wordlist.append(passwrd.shortChars())
+            wordlist.append(passwrd.shortRand())
         return wordlist
     elif passType == 'lr':
         for _ in range(10):
@@ -86,7 +86,7 @@ def genPass(passType='sw'):
         return wordlist
     elif passType == 'lw':
         for _ in range(10):
-            wordlist.append(passwrd.securePass())
+            wordlist.append(passwrd.longSecure())
         return wordlist
     elif passType == 'w':
         for _ in range(20):
@@ -101,7 +101,8 @@ if gen:
         for i in genPass(sys.argv[2]):
             print(i)
     else:
-        print(genPass())
+        for i in genPass():
+            print(i)
 
 elif store:
     pass
