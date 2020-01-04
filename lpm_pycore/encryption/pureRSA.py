@@ -68,18 +68,3 @@ class pureRSA:
 
     def decryptFile(self, file, phrase, idx):
         pass
-
-
-def main():
-    file = open('message.txt', 'rb')
-    message = file.readline()
-    phrase = 'totallyRandomPassPhrase'
-    rsa = pureRSA(phrase, message)
-    rsa.RSAencrypt('encrypted_message.rsa', 'basic', write=True)
-
-    newRSA = pureRSA(phrase, message)
-    newRSA.RSAdecrypt('encrypted_message.rsa', 'little_message', 'basic', write=True)
-
-
-if __name__ == '__main__':
-    main()
