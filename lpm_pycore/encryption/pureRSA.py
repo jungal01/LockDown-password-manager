@@ -1,11 +1,12 @@
-# This file is to test out a method of pure RSA encryption. It's not
-# cryptographically analysed as of yet, but based on other encryption methods,
-# it should be secure.
+# This file is for operations that occur with RSA only. This makes it easy to
+# encrypt anything without the original restriction of doing only a homebrew
+# pure RSA encryption. Note that the homebrew method still exists, but now uses
+# the other class methods as helper functions to simplify the codebase.
 #
-# SPEC: user enters longterm key to encrypt. The algo will create a short term
-# key using longterm key+nonce. Nonce is randomly generated 16 bytes, and
-# stored like salt in front of the encrypted string. If the message is too
-# large to be stored in one RSA pass, a new nonce is generated and the
+# pure RSA SPEC: user enters longterm key to encrypt. The algo will create a
+# short term key using longterm key+nonce. Nonce is randomly generated 16
+# bytes, and stored like salt in front of the encrypted string. If the message
+# is too large to be stored in one RSA pass, a new nonce is generated and the
 # process is repeated until the entire message is encrypted. All keys are
 # stored in a compressed tar file
 

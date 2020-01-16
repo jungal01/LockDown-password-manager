@@ -8,9 +8,11 @@ from Crypto.Random import get_random_bytes
 
 # The passphrase and message to be passed around
 # messages and keys require binary format to work with the API
-# AES requires the padding to be a multiple of 16, 24, or 32 bytes, hence padding
+# AES requires the padding to be a multiple of 16, 24, or 32 bytes, hence
+# padding. If the key is longer than 32 or 24, an error will occur
 message = open('message.txt', 'rb').read()
-key = pad(b'totallyRandomPassphrase', 32)
+key = pad(b'totallyRandowPassphrase', 32)
+print(len(key), key)
 
 # creating an instance of the cipher is quite simple. The mode can be changed
 # with minimal changes to the rest of the code, but eax also offers tamper
@@ -23,7 +25,6 @@ nonce = cipher.nonce
 # verify the fact that the encrypted message wasn't corrupted or inauthentic.
 # This means that the tag must be stored with the ciphertext as well.
 ciphertext, tag = cipher.encrypt_and_digest(message)
-print(tag, len(tag))
 
 # When decrypting, the nonce must be given or the decryption won't work
 newCipher = AES.new(key, AES.MODE_EAX, nonce=nonce)
@@ -32,4 +33,4 @@ plaintext = newCipher.decrypt(ciphertext)
 # This is how the message is verified to be authentic. If the verification
 # fails, the function will throw a ValueError
 newCipher.verify(tag)
-print("Message was not tampered with\n", plaintext)
+# print("Message was not tampered with\n", plaintext)

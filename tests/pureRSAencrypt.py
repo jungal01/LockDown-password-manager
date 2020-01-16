@@ -19,8 +19,8 @@ from Crypto.Random import get_random_bytes
 
 class pureRSA:
     def __init__(self, phrase, message, keysize=2048):
-        self.__phrase = phrase
-        self.__message = message
+        self._phrase = phrase
+        self._message = message
         self.keysize = keysize
 
     def mkKey(self, keyid='_'):
@@ -39,7 +39,7 @@ class pureRSA:
 
         public_key = RSA.importKey(open('publicRSAkey_{}.key' .format(keyid)).read())
         encrypt_cipher = PKCS1_OAEP.new(public_key)
-        ciphertext = encrypt_cipher.encrypt(self.__message)
+        ciphertext = encrypt_cipher.encrypt(self._message)
 
         if write:
             with open(filename, 'wb') as ef:
