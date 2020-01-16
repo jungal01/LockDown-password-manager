@@ -21,8 +21,9 @@ This file is part of LockDown.
 '''
 
 import sys
-from lpm_pycore import passwordGen
+import os
 import random
+from lpm_pycore import passwordGen
 
 
 # gen, store, and launch are the cli options. Gen will create a specified
@@ -34,8 +35,9 @@ gen = False
 store = False
 launch = True
 
-#file = open('dictionary.txt')
-#words = file.read().split('\n')
+path = os.path.join(os.path.dirname(__file__), 'lpm_pycore/dictionary.txt')
+file = open(path)
+words = file.read().split('\n')
 # this will stop the gui from launching if other options are passed
 if len(sys.argv) > 1 and sys.argv[1][0] == '-':
     launch = False
