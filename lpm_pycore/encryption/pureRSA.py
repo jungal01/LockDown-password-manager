@@ -20,13 +20,13 @@ from Crypto.Random import get_random_bytes
 
 class pureRSA:
     def __init__(self, phrase, message, keysize=2048):
-        self.__phrase = phrase
-        self.__message = message
+        self._phrase = phrase
+        self._message = message
         self.keysize = keysize
 
     def mkKey(self, keyid='_'):
         key = RSA.generate(self.keysize)
-        encrypted_key = key.exportKey(passphrase=self.__phrase, pkcs=8, protection='scryptAndAES256-CBC')
+        encrypted_key = key.exportKey(passphrase=self._phrase, pkcs=8, protection='scryptAndAES256-CBC')
 
         with open('privateRSAkey_{}.key'.format(keyid), 'wb') as f:
             f.write(encrypted_key)
@@ -40,7 +40,7 @@ class pureRSA:
 
         public_key = RSA.importKey(open('publicRSAkey_{}.key' .format(keyid)).read())
         encrypt_cipher = PKCS1_OAEP.new(public_key)
-        ciphertext = encrypt_cipher.encrypt(self.__message)
+        ciphertext = encrypt_cipher.encrypt(self._message)
 
         if write:
             with open(filename, 'wb') as ef:
@@ -53,7 +53,7 @@ class pureRSA:
         with open(encryptedName, 'rb') as f:
             ciphertext = f.read()
 
-        private_key = RSA.importKey(open('privateRSAkey_{}.key' .format(keyid)).read(), self.__phrase)
+        private_key = RSA.importKey(open('privateRSAkey_{}.key' .format(keyid)).read(), self._phrase)
         decrypt_cipher = PKCS1_OAEP.new(private_key)
         plaintext = decrypt_cipher.decrypt(ciphertext)
 
