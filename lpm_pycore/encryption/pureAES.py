@@ -1,12 +1,12 @@
 from Crypto.Cipher import AES
-from hashlib import sha256
+from hashlib import sha3_256
 from Crypto.Random import get_random_bytes
 
 
 class pureAES:
 
     def __init__(self, key, message):
-        self._key = sha256(key).digest()
+        self._key = sha3_256(key).digest()
         self._message = message
 
     def encrypt(self, output='a.aes', file=True):
