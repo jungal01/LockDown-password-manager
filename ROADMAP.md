@@ -28,6 +28,8 @@
 
 ## Potential Issues
 
+* The CLI may not be compatible with Windows based systems
+
 ## New Features
 
 - [ ] Graphical User Interface
@@ -43,7 +45,7 @@
 
 ## Core Functionality
 
- - [x] Create cli
+ - [x] Create CLI
  - [x] Create Password Generator
  - [x] Create RSA library
  - [x] Create AES library
