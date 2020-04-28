@@ -20,8 +20,6 @@
 
   The [miscellaneous](#miscellaneous) section is for all aspects of the project that do not strictly fit the other categories.
 
-  An estimated date will be added for the completion of each feature. If a feature has no date, it's development date is beyond 2 months.
-
 ## Issues Being Fixed
 
 ## Known Issues
@@ -36,7 +34,6 @@
 - [ ] Allow multiple users
 - [ ] Store passwords through Command Line Interface (cli): 2020-02-20
 - [ ] Allow user to choose a single password or combine words from generated list
-- [ ] Password key stretching
 - [ ] username/password data breach query to haveibeenpwned.com
 - [ ] iOS app
 - [ ] Android app
@@ -49,11 +46,11 @@
  - [x] Create cli
  - [x] Create Password Generator
  - [x] Create RSA library
- - [ ] Create AES library: 2020-01-28
- - [ ] Create AES-RSA hybrid library: 2020-02-04
- - [ ] Design password file format: 2020-02-11
- - [ ] Store password/account details: 2020-02-18
- - [ ] Authenticate user(s): 2020-02-25
+ - [x] Create AES library
+ - [ ] Create AES-RSA hybrid library
+ - [ ] Design password file format
+ - [ ] Store password/account details
+ - [ ] Authenticate user(s)
 
  ## Core Improvements
 

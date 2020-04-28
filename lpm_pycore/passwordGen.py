@@ -58,9 +58,9 @@ class PasswordGenerator:
         try:
             path = os.path.join(os.path.dirname(__file__), 'dictionary.txt')
             dictionary = open(path)
-            self.__words = set()
+            self._words = set()
             for word in dictionary:
-                self.__words.add(word.strip('\n'))
+                self._words.add(word.strip('\n'))
         except:
             raise Exception("Dictionary is missing, word passwords not possible")
 
@@ -122,18 +122,18 @@ class PasswordGenerator:
         # This is creates a far more secure password. There is no real upper
         # limit on size. It will pull at least 3 and up to 10 words from the set
         r = random.SystemRandom()
-        passwrd = ''.join(r.sample(self.__words, r.randrange(3, 10)))
+        passwrd = ''.join(r.sample(self._words, r.randrange(3, 10)))
         while len(passwrd) < 19:
-            passwrd = ''.join(r.sample(self.__words, r.randrange(3, 10)))
+            passwrd = ''.join(r.sample(self._words, r.randrange(3, 10)))
 
         return ''.join(passwrd)
 
     def shortSecure(self):
         # has a char maximum of 18, and max 4 words
         r = random.SystemRandom()
-        passwrd = r.sample(self.__words, r.randrange(2, 5))
+        passwrd = r.sample(self._words, r.randrange(2, 5))
         while len(''.join(passwrd)) > 18:
-            passwrd = r.sample(self.__words, r.randrange(2, 5))
+            passwrd = r.sample(self._words, r.randrange(2, 5))
 
         return ''.join(passwrd)
 
