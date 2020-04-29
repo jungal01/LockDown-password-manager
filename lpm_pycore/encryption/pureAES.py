@@ -4,6 +4,20 @@ from Crypto.Random import get_random_bytes
 
 
 class pureAES:
+    """
+    ============================================================================
+    This class handles all the AES operations for EAX mode. This class has 2
+    functions. No other modes are planned for.
+
+    encrypt: This function can take both input and files as messages, and only
+        outputs a file of the encrypted data. It does not return anything.
+
+    decrypt: The compelement to encrypt. The only difference is that it can
+        only accept files as the message. The reason for this is that EAX mode
+        requires extra data to decrypt the message that the user usually will
+        not know, and it cannot be assumed that the ciphertext has the data.
+    ============================================================================
+    """
 
     def __init__(self, key, message):
         self._key = sha3_256(key).digest()
@@ -26,7 +40,7 @@ class pureAES:
             with open(self._message, 'rb') as f:
                 nonce, tag, ciphertext = [f.read(x) for x in (16, 16, -1)]
         else:
-            raise NotImplementedError("Decryption of nonfiles not yet supported")
+            raise NotImplementedError("Decryption of nonfiles not supported")
 
         cipher = AES.new(self._key, AES.MODE_EAX, nonce)
         plaintext = cipher.decrypt_and_verify(ciphertext, tag)
