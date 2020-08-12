@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-'''
+"""
 ================================================================================
 Copyright 2017-2018 Allen Junge
 
@@ -18,7 +18,7 @@ This file is part of LockDown.
     You should have received a copy of the GNU General Public License
     along with LockDown.  If not, see <http://www.gnu.org/licenses/>.
 ================================================================================
-'''
+"""
 
 import sys
 import os
@@ -35,9 +35,7 @@ gen = False
 store = False
 launch = True
 
-path = os.path.join(os.path.dirname(__file__), 'lpm_pycore/dictionary.txt')
-file = open(path)
-words = file.read().split('\n')
+words = passwordGen.PasswordGenerator().words()
 # this will stop the gui from launching if other options are passed
 if len(sys.argv) > 1 and sys.argv[1][0] == '-':
     launch = False
@@ -71,7 +69,7 @@ def launchApp():
 def genPass(passType='sw'):
     # this calls the password generator class in passwordGen. The password
     # types are: sr==shortRand, lr==longRand, sw==shortSecure, lw==longSecure,
-    #w==20 random words
+    # w==20 random words
     passwrd = passwordGen.PasswordGenerator()
     wordlist = []
     if passType == 'sr':

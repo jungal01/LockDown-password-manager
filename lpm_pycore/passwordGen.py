@@ -18,7 +18,7 @@ This file is part of LockDown.
 ================================================================================
 '''
 import random
-import os
+import dictAccess
 
 
 class PasswordGenerator:
@@ -56,11 +56,7 @@ class PasswordGenerator:
     """
     def __init__(self, passwrd=None, leetIt=False):
         try:
-            path = os.path.join(os.path.dirname(__file__), 'dictionary.txt')
-            dictionary = open(path)
-            self._words = set()
-            for word in dictionary:
-                self._words.add(word.strip('\n'))
+            self._words = dictAccess.DictAccess().readDict()
         except:
             raise Exception("Dictionary is missing, word passwords not possible")
 
@@ -136,6 +132,9 @@ class PasswordGenerator:
             passwrd = r.sample(self._words, r.randrange(2, 5))
 
         return ''.join(passwrd)
+        
+    def words(self):
+        return self._words
 
 
 def main():
@@ -145,7 +144,7 @@ def main():
         if usr == ('s' or 'short'):
             print(passwrd.shortSecure())
         elif usr == ('l' or 'long'):
-            print(passwrd.securePass())
+            print(passwrd.longSecure())
 
         usr = input("(s)hort (l)ong (q)uit: ")
 

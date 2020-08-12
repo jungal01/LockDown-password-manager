@@ -1,0 +1,13 @@
+social_media:
+   - facebook: {username: "usr3", password: "superSecur3", url: "fb.com", other_info: "507-000-7890"}
+   - reddit: {username: "lelFunnyName", password: "properSecur!ty", url: "old.reddit.com", other_info: "?omitted"}
+
+finances: # higher security section. GUI should give recommendations like omitting urls and more vague titles
+    - bank: {username: "arjliu", password: "correctHorsebAtterystaPle", url: "?omitted", other_info: "email@website.com"}
+
+job_boards:
+    - indeed: {username: "email@website.com", password: "simple&unique", url: "www.indeed.com", other_info: "updated 20 June 2020"}
+
+misc:
+    - youtube: {username: "PewDiePie", password: "I_say_The_N-word", url: "youtube.com", other_info: "?omitted"}
+    - nothing: {username: "JesusIsWatching", password: "youMasturbate", url: "https://www.biblegateway.com/verse/en/Matthew%205:28", other_info: "porn is bad, mmkay?"}
