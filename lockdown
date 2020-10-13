@@ -23,7 +23,7 @@ This file is part of LockDown.
 import sys
 import os
 import random
-from lpm_pycore import passwordGen
+from lpm_pycore import passwordGen, dictAccess
 
 
 # gen, store, and launch are the cli options. Gen will create a specified

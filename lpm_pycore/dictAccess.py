@@ -58,7 +58,8 @@ class DictAccess:
 
 
 def main():
-    print(DictionaryAccess().readDict())
+    print(DictAccess().readDict())
+
 
 if __name__ == "__main__":
     main()
